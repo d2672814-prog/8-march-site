@@ -1,1 +1,788 @@
+<!doctype html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>8 Наурыз • 9В</title>
+  <style>
+    :root{
+      --bg1:#fff0f6; --bg2:#fff7ed; --bg3:#eef2ff;
+      --card:#ffffffcc; --text:#111827; --muted:#6b7280;
+      --line:#ffe4e6; --accent:#e11d48; --accent2:#fb7185;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, var(--bg1), transparent 60%),
+        radial-gradient(1200px 700px at 85% 25%, var(--bg2), transparent 55%),
+        radial-gradient(900px 600px at 60% 85%, var(--bg3), transparent 55%),
+        linear-gradient(180deg,#ffffff,#fff7ed);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:24px 16px 76px}
+    header{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .pill{
+      padding:8px 12px;border:1px solid #fecdd3;border-radius:999px;background:#fff;
+      box-shadow:0 8px 20px rgba(0,0,0,.05);font-weight:950;font-size:13px;
+    }
+    h1{margin:16px 0 8px;font-size:clamp(28px,4vw,46px);letter-spacing:-.02em;line-height:1.05}
+    .sub{margin:0;opacity:.88;max-width:78ch;font-size:clamp(14px,2vw,18px);line-height:1.5}
+    .hero{margin-top:16px;display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .card{
+      background:var(--card);backdrop-filter: blur(10px);
+      border:1px solid var(--line);border-radius:18px;padding:18px;
+      box-shadow:0 18px 40px rgba(0,0,0,.06);
+    }
+    .big{padding:22px}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button{
+      cursor:pointer;border:0;border-radius:14px;padding:12px 14px;
+      font-weight:950;transition:.15s transform,.15s filter,.15s opacity;
+    }
+    button:active{transform:translateY(1px) scale(.99)}
+    .primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 12px 25px rgba(225,29,72,.25)}
+    .ghost{background:#fff;border:1px solid #fecdd3;color:var(--accent)}
+    .dark{background:linear-gradient(135deg,#111827,#374151);color:#fff}
+    .hint{margin:10px 0 0;font-size:12px;color:var(--muted);line-height:1.45}
 
+    .toolbar{margin-top:18px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .search{
+      flex:1;min-width:240px;background:#fff;border:1px solid var(--line);
+      border-radius:16px;padding:12px 14px;box-shadow:0 10px 24px rgba(0,0,0,.05);
+      display:flex;gap:10px;align-items:center;
+    }
+    .search input{width:100%;border:0;outline:0;font-size:14px;background:transparent}
+    .counter{font-weight:950;color:#9f1239}
+
+    .sectionTitle{margin:18px 0 10px;font-size:18px}
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:10px}
+    @media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:780px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:480px){.grid{grid-template-columns:1fr}}
+    .gift{
+      background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px;
+      box-shadow:0 12px 26px rgba(0,0,0,.06);
+      display:flex;flex-direction:column;gap:10px;min-height:170px;
+      transition:.15s transform,.15s box-shadow;
+      position:relative; overflow:hidden;
+    }
+    .gift:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(0,0,0,.08)}
+    .gift::before{
+      content:"";position:absolute;inset:-70px -50px auto auto;width:170px;height:170px;
+      background:radial-gradient(circle at 30% 30%, #ffe4e6, transparent 60%);
+      transform:rotate(25deg);opacity:.9;
+    }
+    .giftTop{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative}
+    .name{font-size:16px;font-weight:950}
+    .tag{
+      font-size:12px;font-weight:950;padding:6px 10px;border-radius:999px;
+      border:1px solid #fecdd3;background:#fff0f6;color:#9f1239;white-space:nowrap;
+    }
+    .desc{margin:0;color:var(--muted);font-size:13px;line-height:1.35;position:relative}
+    .openBtn{margin-top:auto;width:100%;background:linear-gradient(135deg,#111827,#374151);color:#fff;border-radius:14px;padding:11px 12px;font-weight:950}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.38);z-index:60}
+    .modal.open{display:flex}
+    .box{
+      width:min(980px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;
+      padding:16px;box-shadow:0 25px 70px rgba(0,0,0,.25);position:relative;
+      display:grid;grid-template-columns: .9fr 1.1fr;gap:14px;
+      animation: pop .18s ease-out;
+    }
+    @keyframes pop{from{transform:translateY(6px) scale(.985);opacity:.7}to{transform:none;opacity:1}}
+    @media (max-width:880px){.box{grid-template-columns:1fr}}
+    .close{
+      position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:14px;
+      border:1px solid var(--line);background:#fff;font-size:18px;cursor:pointer;
+    }
+
+    /* Gift box animation */
+    .giftStage{display:grid;gap:12px;align-content:start}
+    .giftBoxWrap{border:1px solid var(--line);border-radius:18px;background:linear-gradient(135deg,#fff0f6,#fff7ed);padding:14px}
+    .giftBox{
+      width:min(320px, 100%);margin:0 auto;position:relative;height:230px;
+      display:flex;align-items:flex-end;justify-content:center;perspective:800px;
+    }
+    .boxBottom{
+      width:260px;height:140px;border-radius:18px;background:linear-gradient(135deg,#fb7185,#e11d48);
+      box-shadow:0 20px 40px rgba(225,29,72,.25);position:relative;overflow:hidden;
+    }
+    .boxBottom:before{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:36px;height:100%;background:rgba(255,255,255,.35)}
+    .boxBottom:after{content:"";position:absolute;left:0;top:46%;width:100%;height:28px;background:rgba(255,255,255,.22)}
+    .lid{
+      width:280px;height:72px;border-radius:18px;background:linear-gradient(135deg,#ff9bb5,#fb7185);
+      position:absolute;bottom:140px;transform-origin: 50% 100%;
+      box-shadow:0 18px 35px rgba(0,0,0,.12);
+    }
+    .bow{position:absolute;bottom:165px;left:50%;transform:translateX(-50%);width:92px;height:92px}
+    .bow:before,.bow:after{
+      content:"";position:absolute;top:26px;width:44px;height:34px;border-radius:12px 18px 18px 12px;
+      background:rgba(255,255,255,.55);box-shadow:0 10px 20px rgba(0,0,0,.08);
+    }
+    .bow:before{left:-6px;transform:rotate(-12deg)}
+    .bow:after{right:-6px;transform:rotate(12deg);border-radius:18px 12px 12px 18px}
+    .knot{position:absolute;left:50%;top:44px;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:8px;background:rgba(255,255,255,.7);box-shadow:0 10px 20px rgba(0,0,0,.08)}
+    .sparkles{position:absolute;inset:0;pointer-events:none;opacity:0}
+    .sparkles span{position:absolute;width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.85);animation: twinkle 1.2s ease-in-out infinite}
+    @keyframes twinkle{0%,100%{transform:scale(.8);opacity:.55}50%{transform:scale(1.15);opacity:1}}
+    .giftBox.open .lid{animation: lidOpen .55s cubic-bezier(.2,.9,.2,1) forwards}
+    @keyframes lidOpen{0%{transform:translateY(0) rotateX(0)}100%{transform:translateY(-10px) rotateX(70deg)}}
+    .giftBox.open .sparkles{opacity:1;animation: shine .8s ease-out forwards}
+    @keyframes shine{from{transform:translateY(10px)}to{transform:translateY(0)}}
+
+    .photo{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;border:1px solid var(--line);background:#fff;box-shadow:0 16px 34px rgba(0,0,0,.08)}
+    .msg h2{margin:0 0 6px}
+    .msg p{margin:0;opacity:.92;line-height:1.6}
+    .mini{margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:16px;background:#fff7ed;color:#7c2d12;font-weight:950;font-size:13px;line-height:1.45}
+
+    /* Confetti */
+    .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:80;display:none}
+    .confetti.show{display:block}
+    .piece{position:absolute;top:-10px;width:10px;height:14px;opacity:.95;border-radius:3px;animation: fall linear forwards}
+    @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:1}}
+
+    /* Petals + Hearts */
+    .fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}
+    .petal{
+      position:absolute;top:-30px;width:18px;height:12px;border-radius:18px 18px 18px 0;
+      background:linear-gradient(135deg,#fb7185,#fff);opacity:.55;animation: drift linear forwards;
+    }
+    .heart{
+      position:absolute;top:-40px;width:18px;height:18px;opacity:.55;animation: drift linear forwards;
+      transform: rotate(10deg);
+      background: radial-gradient(circle at 30% 30%, #fff, transparent 55%);
+      filter: blur(.15px);
+    }
+    .heart:before,.heart:after{
+      content:"";position:absolute;width:10px;height:10px;background:#fb7185;border-radius:50%;
+      top:4px;
+    }
+    .heart:before{left:2px}
+    .heart:after{right:2px}
+    .heart i{
+      position:absolute;left:50%;top:8px;transform:translateX(-50%) rotate(45deg);
+      width:12px;height:12px;background:#fb7185;border-radius:2px;
+    }
+    @keyframes drift{
+      to{transform:translateY(110vh) translateX(var(--dx)) rotate(540deg);opacity:.78}
+    }
+
+    /* Floating controls */
+    .floatBar{
+      position:fixed;right:14px;bottom:14px;z-index:90;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .fab{
+      display:flex;align-items:center;gap:8px;
+      background:#fff;border:1px solid var(--line);border-radius:16px;
+      padding:10px 12px;box-shadow:0 14px 30px rgba(0,0,0,.12);
+      font-weight:950;color:#9f1239;
+    }
+    .fab small{font-weight:800;color:var(--muted)}
+    .fab button{
+      padding:10px 12px;border-radius:14px;border:0;cursor:pointer;font-weight:950;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;
+    }
+    .fab .miniBtn{background:#fff;border:1px solid #fecdd3;color:#9f1239}
+    .range{
+      width:140px;
+      accent-color:#e11d48;
+    }
+
+    /* Editor modal */
+    .editorBox{
+      width:min(980px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;
+      padding:16px;box-shadow:0 25px 70px rgba(0,0,0,.25);position:relative;
+      animation: pop .18s ease-out;
+    }
+    .edGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+    @media (max-width:820px){.edGrid{grid-template-columns:1fr}}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:12px;font-weight:950;color:#9f1239}
+    .field input,.field textarea,.field select{
+      padding:10px 12px;border:1px solid var(--line);border-radius:14px;outline:0;font-size:14px;
+      background:#fff;
+    }
+    .field textarea{min-height:90px;resize:vertical}
+    .edActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .note{font-size:12px;color:var(--muted);line-height:1.45;margin-top:8px}
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background:#111827;color:#fff;border-radius:14px;padding:10px 12px;
+      font-weight:900;opacity:0;pointer-events:none;transition:.2s;z-index:120
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+  </style>
+</head>
+<body>
+  <div class="fx" id="fx"></div>
+  <div class="confetti" id="confetti"></div>
+  <div class="toast" id="toast">Сақталды ✅</div>
+
+  <div class="wrap">
+    <header>
+      <div class="pill">🌷 8 Наурыз • 9В сыныбы</div>
+      <div class="pill" id="datePill"></div>
+    </header>
+
+    <h1 id="title">Қымбатты қыздар, 8 Наурыз құтты болсын! 💐</h1>
+    <p class="sub" id="subtitle">
+      9В сыныбы сіздерді шын жүректен құттықтайды! Көктемдей құлпырып, әр күні қуанышқа толы болсын.
+      Денсаулық, бақыт, шабыт және үлкен армандардың орындалуын тілейміз! ✨
+    </p>
+
+    <section class="hero">
+      <div class="card big">
+        <div style="font-weight:950;font-size:16px">Құттықтау</div>
+        <p style="margin:10px 0 0;opacity:.92;line-height:1.65" id="mainWish">
+          Сіздер — сыныбымыздың көркісіздер. Күлімсіреу, сенім және жақсы адамдар әрдайым қасыңыздан табылсын.
+          Әр күніңіз гүлдей жайнап өтсін! 🌸
+        </p>
+
+        <div class="btns">
+          <button class="primary" id="goBtn">Сыйлық таңдауға өту 🎁</button>
+          <button class="ghost" id="copyBtn">Мәтінді көшіру 📋</button>
+          <button class="dark" id="musicBtn">Музыка ▶️</button>
+        </div>
+
+        <div class="hint">
+          Музыка кейде автомат ойнамайды (браузер ережесі). Сондықтан “Музыка ▶️” бассаң, бірден қосылады.
+        </div>
+
+        <!-- Музыка файлын осында қой -->
+        <audio id="audio" preload="auto">
+          <!-- Вариант 1: өз файлың -->
+          <source src="music.mp3" type="audio/mpeg">
+          <!-- Егер mp3 болмаса, ogg қойсаң да болады -->
+        </audio>
+
+      </div>
+
+      <div class="card">
+        <div style="font-weight:950">Фото/музыка нұсқаулық</div>
+        <p style="margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.55">
+          1) <b>img</b> папка аш → фотоларды сал.<br>
+          2) Музыка үшін осы папкаға <b>music.mp3</b> деп файл қоя сал (немесе кодтан атауын ауыстыр).<br>
+          3) Мәтінді/фото жолын өзгерту үшін төмендегі <b>⚙️ Редактор</b> батырмасын қолдан.
+        </p>
+      </div>
+    </section>
+
+    <div class="toolbar" id="toolbar">
+      <div class="search">
+        <span style="font-weight:950;color:#9f1239">🔎</span>
+        <input id="search" placeholder="Атын жаз (мысалы: Safiya немесе Inkar)..." autocomplete="off" />
+      </div>
+      <div class="counter" id="counter"></div>
+    </div>
+
+    <h3 class="sectionTitle" id="giftsTitle">🎀 Өзіңе арналған сыйлықты таңда</h3>
+    <div class="grid" id="giftGrid"></div>
+
+    <div style="margin-top:18px;opacity:.75;font-size:13px;text-align:center">
+      Жылы көңілмен • 9В 🌷
+    </div>
+  </div>
+
+  <!-- Gift Modal -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+      <button class="close" id="closeBtn" aria-label="Жабу">✕</button>
+
+      <div class="giftStage">
+        <div class="giftBoxWrap">
+          <div class="giftBox" id="giftBox">
+            <div class="lid"></div>
+            <div class="bow"><div class="knot"></div></div>
+            <div class="boxBottom"></div>
+            <div class="sparkles" id="sparkles"></div>
+          </div>
+          <div style="margin-top:8px;font-size:12px;color:var(--muted);line-height:1.45">
+            Сыйлық ашылды 🎁
+          </div>
+        </div>
+        <img class="photo" id="photo" alt="Фото" />
+      </div>
+
+      <div class="msg">
+        <h2 id="mTitle">🎁 Сыйлық</h2>
+        <p id="mText"></p>
+        <div class="mini" id="miniText"></div>
+        <div style="margin-top:10px;color:var(--muted);font-size:12px;line-height:1.45">
+          Кеңес: ESC бассаң жабылады. Сырт жағын бассаң да жабылады.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editor Modal -->
+  <div class="modal" id="editorModal" aria-hidden="true">
+    <div class="editorBox" role="dialog" aria-modal="true" aria-labelledby="edTitle">
+      <button class="close" id="edClose" aria-label="Жабу">✕</button>
+      <h2 id="edTitle" style="margin:0 0 6px">⚙️ Редактор режимі</h2>
+      <div style="color:var(--muted);font-size:13px;line-height:1.45">
+        Мұнда қыздардың атын/тілегін/фотосын сайттың өзінен өзгерте аласың. “Сақтау” бассаң — браузерде сақталады.
+      </div>
+
+      <div class="edGrid">
+        <div class="field">
+          <label>Кімді өңдейміз?</label>
+          <select id="edSelect"></select>
+        </div>
+
+        <div class="field">
+          <label>Tag (қысқа белгі)</label>
+          <input id="edTag" placeholder="мысалы: 🌷 Гүл шоғы" />
+        </div>
+
+        <div class="field">
+          <label>Аты</label>
+          <input id="edName" placeholder="аты" />
+        </div>
+
+        <div class="field">
+          <label>Фото жолы</label>
+          <input id="edPhoto" placeholder="img/....jpg" />
+        </div>
+
+        <div class="field" style="grid-column:1/-1">
+          <label>Негізгі тілек</label>
+          <textarea id="edWish" placeholder="тілек мәтіні"></textarea>
+        </div>
+
+        <div class="field" style="grid-column:1/-1">
+          <label>Mini мәтін</label>
+          <input id="edMini" placeholder="қысқа тілек" />
+        </div>
+      </div>
+
+      <div class="edActions">
+        <button class="primary" id="edSave">Сақтау ✅</button>
+        <button class="ghost" id="edReset">Барлығын бастапқыға қайтару ↩️</button>
+        <button class="dark" id="edExport">JSON экспорт ⬇️</button>
+        <button class="dark" id="edImport">JSON импорт ⬆️</button>
+      </div>
+
+      <div class="note">
+        <b>Музыка:</b> файлды осы папкаға <b>music.mp3</b> деп салсаң болды.  
+        Егер басқа ат болса — кодта <code>&lt;source src="music.mp3"&gt;</code> жолын өзгерте сал.
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating controls -->
+  <div class="floatBar">
+    <div class="fab">
+      <span>🔊</span>
+      <small>Дыбыс</small>
+      <input class="range" id="vol" type="range" min="0" max="1" step="0.01" value="0.6">
+    </div>
+    <div class="fab">
+      <button id="editorBtn" class="miniBtn" style="display:none">⚙️ Редактор</button>
+      <button id="fxBtn" class="miniBtn">💗 Эффект</button>
+    </div>
+  </div>
+
+  <script>
+    // Редактор тек ?edit=1 болса ғана көрінеді
+const params = new URLSearchParams(location.search);
+const canEdit = params.get("edit") === "1";
+if (canEdit) {
+  document.getElementById("editorBtn").style.display = "";
+}
+    // ===== Default data (сен берген тізім) =====
+    const DEFAULT = [
+      { name:"Nursultankyzy Safiya", photo:"img/safiya.jpeg",  tag:"🌷 Гүл шоғы", wish:"Саған зор бақыт, мықты денсаулық және армандарыңның орындалуын тілейміз!", mini:"Көктемдей құлпырып жүр! ✨" },
+      { name:"Semgalieva Ruani",     photo:"img/ruani.jpeg",   tag:"🍫 Тәтті",    wish:"Көңілің әрдайым көтеріңкі, күнің жарқын болсын!", mini:"Жымиюың көп болсын 😊" },
+      { name:"Nurymbet Nuray",       photo:"img/nuray.jpeg",   tag:"🍀 Сәттілік", wish:"Оқуда да, өмірде де тек сәттілік серік болсын!", mini:"Өзіңе сен — бәрі болады 💪" },
+      { name:"Otarbaeva Shyryn",     photo:"img/shyryn.jpeg",  tag:"💌 Тілек",    wish:"Әр күнің қуаныш пен жақсы жаңалықтарға толы болсын!", mini:"Бақытты бол! 💐" },
+      { name:"Inkar Konyssova",      photo:"img/inkar_k.jpeg", tag:"🎀 Сюрприз",  wish:"Жүрегіңде жылу, жанарыңда үміт әрдайым бар болсын!", mini:"Сен ерекше жансың 🌸" },
+      { name:"Gilash Asem",          photo:"img/asem.jpeg",    tag:"✨ Шабыт",    wish:"Шабыт пен табыс тілейміз! Әр бастамаң сәтті болсын!", mini:"Жарқырап жүр 🌟" },
+      { name:"Tasmukan Inkar",       photo:"img/inkar_t.jpeg", tag:"🏅 Марапат",  wish:"Армандарың орындалып, болашағың жарқын болсын!", mini:"Алға! Сен мықтысың 🔥" },
+      { name:"Elubai Nazym",         photo:"img/nazym.jpeg",   tag:"🌼 Жылу",     wish:"Саған тек жақсылық, тыныштық және бақыт тілейміз!", mini:"Көңілің күндей болсын ☀️" },
+      { name:"Dauletiyar Shugyla",   photo:"img/shugyla.jpeg", tag:"🎉 Қуаныш",   wish:"Көбірек күлкі, бақыт және керемет сәттер тілейміз!", mini:"Күліп жүр 😊💐" }
+      { name:"Ибрагимова Гульмайра (куратор)", photo:"img/gulmayra.jpeg", tag:"🌟 Кураторымыз", wish:"Құрметті Гульмайра апай, 8 Наурыз құтты болсын! Еңбегіңізге рақмет, денсаулық пен бақыт тілейміз!", mini:"Сізге үлкен алғыс! 💐"}
+    ];
+
+    const STORE_KEY = "march8_9v_data_v1";
+    function loadData(){
+      try{
+        const raw = localStorage.getItem(STORE_KEY);
+        if(!raw) return structuredClone(DEFAULT);
+        const parsed = JSON.parse(raw);
+        if(!Array.isArray(parsed) || parsed.length===0) return structuredClone(DEFAULT);
+        return parsed;
+      }catch(e){
+        return structuredClone(DEFAULT);
+      }
+    }
+    function saveData(data){
+      localStorage.setItem(STORE_KEY, JSON.stringify(data));
+    }
+
+    let girls = loadData();
+
+    // ===== Date =====
+    document.getElementById("datePill").textContent =
+      new Date().toLocaleDateString("kk-KZ",{day:"2-digit",month:"long",year:"numeric"});
+
+    // ===== Copy =====
+    const copyText =
+`Қымбатты қыздар, 8 Наурыз құтты болсын! 💐
+9В сыныбы сіздерді шын жүректен құттықтайды!
+Бақыт, денсаулық, шабыт және армандарыңыздың орындалуын тілейміз! 🌷✨`;
+    document.getElementById("copyBtn").addEventListener("click", async ()=>{
+      try{ await navigator.clipboard.writeText(copyText); toast("Көшірілді ✅"); }
+      catch(e){ toast("Көшіру шықпады 😅"); }
+    });
+
+    // ===== Scroll =====
+    document.getElementById("goBtn").addEventListener("click", ()=>{
+      document.getElementById("toolbar").scrollIntoView({behavior:"smooth"});
+    });
+
+    // ===== Render cards + search =====
+    const grid = document.getElementById("giftGrid");
+    const search = document.getElementById("search");
+    const counter = document.getElementById("counter");
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+      }[s]));
+    }
+
+    function render(list){
+      grid.innerHTML = "";
+      list.forEach(g=>{
+        const card = document.createElement("div");
+        card.className = "gift";
+        card.innerHTML = `
+          <div class="giftTop">
+            <div class="name">${escapeHtml(g.name)}</div>
+            <div class="tag">${escapeHtml(g.tag)}</div>
+          </div>
+          <p class="desc">${escapeHtml(g.wish)}</p>
+          <button class="openBtn" data-name="${encodeURIComponent(g.name)}">Сыйлықты ашу 🎁</button>
+        `;
+        grid.appendChild(card);
+      });
+      counter.textContent = `Көрсетілді: ${list.length}/${girls.length}`;
+    }
+
+    function filterAndRender(){
+      const q = search.value.trim().toLowerCase();
+      if(!q){ render(girls); return; }
+      render(girls.filter(g => g.name.toLowerCase().includes(q)));
+    }
+
+    render(girls);
+    search.addEventListener("input", filterAndRender);
+
+    // ===== Gift modal =====
+    const modal = document.getElementById("modal");
+    const closeBtn = document.getElementById("closeBtn");
+    const photo = document.getElementById("photo");
+    const mTitle = document.getElementById("mTitle");
+    const mText = document.getElementById("mText");
+    const miniText = document.getElementById("miniText");
+    const giftBox = document.getElementById("giftBox");
+    const sparkles = document.getElementById("sparkles");
+
+    function placeholderFor(name){
+      const safe = name.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      const svg =
+`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1125">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff0f6"/>
+      <stop offset="1" stop-color="#fff7ed"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <text x="50%" y="44%" text-anchor="middle" font-size="54" font-family="Arial" fill="#9f1239" font-weight="700">Фото жоқ</text>
+  <text x="50%" y="54%" text-anchor="middle" font-size="40" font-family="Arial" fill="#111827" font-weight="700">${safe}</text>
+  <text x="50%" y="63%" text-anchor="middle" font-size="26" font-family="Arial" fill="#6b7280">img папкасына фотосын қос</text>
+</svg>`;
+      return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+    }
+
+    function buildSparkles(){
+      sparkles.innerHTML = "";
+      const pts = [[20,20],[60,18],[85,30],[30,55],[70,58],[15,80],[50,88],[88,78]];
+      pts.forEach(([x,y],i)=>{
+        const s = document.createElement("span");
+        s.style.left = x+"%"; s.style.top = y+"%";
+        s.style.animationDelay = (i*0.08)+"s";
+        sparkles.appendChild(s);
+      });
+    }
+    buildSparkles();
+
+    function openGift(g){
+      giftBox.classList.remove("open");
+      void giftBox.offsetWidth;
+
+      mTitle.textContent = `🎁 ${g.name} үшін сыйлық!`;
+      mText.textContent = g.wish;
+      miniText.textContent = g.mini;
+
+      const src = (g.photo || "").trim();
+      photo.src = src ? src : placeholderFor(g.name);
+      photo.onerror = () => { photo.src = placeholderFor(g.name); };
+
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      setTimeout(()=> giftBox.classList.add("open"), 140);
+
+      launchConfetti();
+      pulseHearts(8);
+    }
+
+    function closeModal(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+    }
+    closeBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+    window.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
+
+    grid.addEventListener("click",(e)=>{
+      const btn = e.target.closest("button.openBtn");
+      if(!btn) return;
+      const name = decodeURIComponent(btn.dataset.name || "");
+      const g = girls.find(x => x.name === name);
+      if(g) openGift(g);
+    });
+
+    // ===== Confetti =====
+    const confetti = document.getElementById("confetti");
+    function launchConfetti(){
+      confetti.innerHTML = "";
+      confetti.classList.add("show");
+      const colors = ["#e11d48","#fb7185","#f59e0b","#22c55e","#3b82f6","#a78bfa"];
+      for(let i=0;i<150;i++){
+        const p = document.createElement("div");
+        p.className="piece";
+        p.style.left = (Math.random()*100) + "vw";
+        p.style.animationDuration = (2.0 + Math.random()*2.8) + "s";
+        p.style.animationDelay = (Math.random()*0.15) + "s";
+        p.style.background = colors[Math.floor(Math.random()*colors.length)];
+        p.style.width = (7 + Math.random()*9) + "px";
+        p.style.height = (9 + Math.random()*14) + "px";
+        confetti.appendChild(p);
+      }
+      setTimeout(()=> confetti.classList.remove("show"), 3600);
+    }
+
+    // ===== Petals + Hearts =====
+    const fx = document.getElementById("fx");
+    let fxEnabled = true;
+
+    function spawnPetal(){
+      if(!fxEnabled) return;
+      const p = document.createElement("div");
+      p.className = "petal";
+      const x = Math.random()*100;
+      const dx = (Math.random()*160 - 80).toFixed(0) + "px";
+      const dur = (7 + Math.random()*6).toFixed(2) + "s";
+      p.style.left = x + "vw";
+      p.style.setProperty("--dx", dx);
+      p.style.animationDuration = dur;
+      p.style.opacity = (0.30 + Math.random()*0.35).toFixed(2);
+      p.style.transform = `rotate(${Math.random()*180}deg)`;
+      fx.appendChild(p);
+      setTimeout(()=> p.remove(), (parseFloat(dur)*1000)+250);
+    }
+
+    function spawnHeart(){
+      if(!fxEnabled) return;
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.innerHTML = "<i></i>";
+      const x = Math.random()*100;
+      const dx = (Math.random()*180 - 90).toFixed(0) + "px";
+      const dur = (6 + Math.random()*6).toFixed(2) + "s";
+      const size = (12 + Math.random()*16).toFixed(0) + "px";
+      h.style.left = x + "vw";
+      h.style.setProperty("--dx", dx);
+      h.style.animationDuration = dur;
+      h.style.width = size; h.style.height = size;
+      h.style.opacity = (0.25 + Math.random()*0.35).toFixed(2);
+      fx.appendChild(h);
+      setTimeout(()=> h.remove(), (parseFloat(dur)*1000)+250);
+    }
+
+    function pulseHearts(n=6){
+      for(let i=0;i<n;i++){
+        setTimeout(spawnHeart, i*90);
+      }
+    }
+
+    // start gentle FX
+    for(let i=0;i<10;i++) setTimeout(spawnPetal, i*450);
+    setInterval(spawnPetal, 650);
+    setInterval(spawnHeart, 900);
+
+    document.getElementById("fxBtn").addEventListener("click", ()=>{
+      fxEnabled = !fxEnabled;
+      toast(fxEnabled ? "Эффект қосылды 💗" : "Эффект өшті 🙈");
+    });
+
+    // ===== Music =====
+    const audio = document.getElementById("audio");
+    const musicBtn = document.getElementById("musicBtn");
+    const vol = document.getElementById("vol");
+    audio.volume = Number(vol.value);
+
+    vol.addEventListener("input", ()=>{ audio.volume = Number(vol.value); });
+
+    function setMusicLabel(){
+      musicBtn.textContent = audio.paused ? "Музыка ▶️" : "Музыка ⏸️";
+    }
+    setMusicLabel();
+
+    musicBtn.addEventListener("click", async ()=>{
+      try{
+        if(audio.paused){
+          await audio.play();
+        }else{
+          audio.pause();
+        }
+      }catch(e){
+        toast("Музыка файлын тексер: music.mp3 бар ма?");
+      }
+      setMusicLabel();
+    });
+
+    // if user opens gift, gently start music if possible
+    document.addEventListener("click", async (e)=>{
+      if(!audio.paused) return;
+      // after any user interaction, some browsers allow play
+      // don't force; just keep button available
+    }, {once:true});
+
+    // ===== Editor =====
+    const editorModal = document.getElementById("editorModal");
+    const editorBtn = document.getElementById("editorBtn");
+    const edClose = document.getElementById("edClose");
+    const edSelect = document.getElementById("edSelect");
+    const edName = document.getElementById("edName");
+    const edTag = document.getElementById("edTag");
+    const edPhoto = document.getElementById("edPhoto");
+    const edWish = document.getElementById("edWish");
+    const edMini = document.getElementById("edMini");
+
+    function openEditor(){
+      rebuildSelect();
+      loadForm(0);
+      editorModal.classList.add("open");
+      editorModal.setAttribute("aria-hidden","false");
+    }
+    function closeEditor(){
+      editorModal.classList.remove("open");
+      editorModal.setAttribute("aria-hidden","true");
+    }
+    editorBtn.addEventListener("click", openEditor);
+    edClose.addEventListener("click", closeEditor);
+    editorModal.addEventListener("click", (e)=>{ if(e.target===editorModal) closeEditor(); });
+
+    function rebuildSelect(){
+      edSelect.innerHTML = "";
+      girls.forEach((g,i)=>{
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = g.name;
+        edSelect.appendChild(opt);
+      });
+    }
+
+    function loadForm(i){
+      const g = girls[i];
+      edSelect.value = String(i);
+      edName.value = g.name;
+      edTag.value = g.tag;
+      edPhoto.value = g.photo;
+      edWish.value = g.wish;
+      edMini.value = g.mini;
+    }
+
+    edSelect.addEventListener("change", ()=> loadForm(Number(edSelect.value)));
+
+    document.getElementById("edSave").addEventListener("click", ()=>{
+      const i = Number(edSelect.value);
+      girls[i] = {
+        name: edName.value.trim() || girls[i].name,
+        tag: edTag.value.trim() || girls[i].tag,
+        photo: edPhoto.value.trim(),
+        wish: edWish.value.trim() || girls[i].wish,
+        mini: edMini.value.trim() || girls[i].mini
+      };
+      saveData(girls);
+      rebuildSelect();
+      filterAndRender();
+      toast("Сақталды ✅");
+    });
+
+    document.getElementById("edReset").addEventListener("click", ()=>{
+      if(!confirm("Бастапқы күйге қайтарсын ба?")) return;
+      girls = structuredClone(DEFAULT);
+      saveData(girls);
+      rebuildSelect();
+      loadForm(0);
+      filterAndRender();
+      toast("Қайтарылды ↩️");
+    });
+
+    document.getElementById("edExport").addEventListener("click", async ()=>{
+      const json = JSON.stringify(girls, null, 2);
+      try{
+        await navigator.clipboard.writeText(json);
+        toast("JSON көшірілді (буферде) ✅");
+      }catch(e){
+        // fallback: download
+        const blob = new Blob([json], {type:"application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url; a.download = "9v_girls.json";
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+        toast("JSON файл жүктелді ✅");
+      }
+    });
+
+    document.getElementById("edImport").addEventListener("click", ()=>{
+      const raw = prompt("JSON-ды осында paste жаса:");
+      if(!raw) return;
+      try{
+        const parsed = JSON.parse(raw);
+        if(!Array.isArray(parsed) || parsed.length===0) throw new Error("bad");
+        girls = parsed;
+        saveData(girls);
+        rebuildSelect();
+        loadForm(0);
+        filterAndRender();
+        toast("Импорт дайын ✅");
+      }catch(e){
+        toast("JSON қате сияқты 😅");
+      }
+    });
+
+    // ===== Toast =====
+    const toastEl = document.getElementById("toast");
+    let toastTimer = null;
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=> toastEl.classList.remove("show"), 1400);
+    }
+  </script>
+</body>
+</html>
